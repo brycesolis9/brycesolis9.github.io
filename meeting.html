@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule a Meeting | Bryce Solis</title>
+    <meta name="description" content="Schedule a meeting with Bryce Solis. Timezone converter included.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Page-specific styles */
+        .meeting-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .converter-card {
+            background: var(--color-glass);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 16px;
+            padding: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .time-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            align-items: start;
+        }
+
+        .time-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        .time-group input,
+        .time-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            border: 1px solid var(--color-glass-border);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-family: var(--font-main);
+            font-size: 1rem;
+        }
+
+        .time-group input:focus,
+        .time-group select:focus {
+            outline: none;
+            border-color: var(--color-secondary);
+        }
+
+        .result-display {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .result-time {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-secondary);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #2ecc71;
+            border: 1px solid rgba(46, 204, 113, 0.4);
+        }
+
+        .status-unavailable {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid rgba(231, 76, 60, 0.4);
+        }
+
+        .action-area {
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        @media (max-width: 600px) {
+            .time-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="main-header">
+        <nav class="container">
+            <a href="index.html" class="logo">Bryce Solis</a>
+            <ul class="nav-links">
+                <li><a href="index.html#about">About</a></li>
+                <li><a href="index.html#experience">Experience</a></li>
+                <li><a href="index.html#skills">Skills</a></li>
+                <li><a href="index.html#contact" class="btn-primary">Contact</a></li>
+            </ul>
+            <button class="mobile-menu-toggle" aria-label="Toggle navigation">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero" style="min-height: 60vh; padding-bottom: var(--spacing-lg);">
+            <div class="container meeting-container">
+                <h1 class="animate-fade-up">Schedule a <span class="highlight">Meeting</span></h1>
+                <p class="subtitle animate-fade-up delay-1">Find a time that works for both of us.</p>
+
+                <div class="converter-card animate-fade-up delay-2">
+                    <div class="time-row">
+                        <div class="time-group">
+                            <label for="user-time">Your Date & Time</label>
+                            <input type="datetime-local" id="user-time">
+                            <p id="user-timezone-display"
+                                style="font-size: 0.8rem; color: var(--color-text-muted); margin-top: 0.5rem;">Detecting
+                                timezone...</p>
+                        </div>
+
+                        <div class="time-group">
+                            <label>My Time (Alberta, Canada)</label>
+                            <div class="result-display">
+                                <span class="result-time" id="alberta-time">--:-- AM</span>
+                                <span id="availability-badge" class="status-badge status-unavailable">Select a
+                                    time</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-area">
+                        <p style="margin-bottom: 1rem; color: var(--color-text-muted);">Business Hours: 9:00 AM - 5:00
+                            PM (Mountain Time)</p>
+                        <a href="#" id="book-btn" class="btn-primary"
+                            style="opacity: 0.5; pointer-events: none;">Request This Time</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Bryce Solis. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Page-specific logic for Meeting Scheduler
+        document.addEventListener('DOMContentLoaded', () => {
+            const userTimeInput = document.getElementById('user-time');
+            const userTimezoneDisplay = document.getElementById('user-timezone-display');
+            const albertaTimeDisplay = document.getElementById('alberta-time');
+            const availabilityBadge = document.getElementById('availability-badge');
+            const bookBtn = document.getElementById('book-btn');
+
+            // 1. Detect User Timezone
+            const userTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            userTimezoneDisplay.textContent = `Your Timezone: ${userTimezone}`;
+
+            // Set default value to now (rounded to next hour)
+            const now = new Date();
+            now.setMinutes(0, 0, 0);
+            now.setHours(now.getHours() + 1);
+            // Format for datetime-local input (YYYY-MM-DDTHH:mm)
+            const formatForInput = (date) => {
+                const pad = (n) => n < 10 ? '0' + n : n;
+                return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+            };
+            userTimeInput.value = formatForInput(now);
+
+            // 2. Update Logic
+            function updateConverter() {
+                if (!userTimeInput.value) return;
+
+                const inputDate = new Date(userTimeInput.value);
+
+                // Convert to Alberta Time (Mountain Time)
+                const albertaDateString = inputDate.toLocaleString("en-US", { timeZone: "America/Edmonton" });
+                const albertaDate = new Date(albertaDateString);
+
+                // Format display
+                const timeOptions = { hour: 'numeric', minute: '2-digit', hour12: true };
+                albertaTimeDisplay.textContent = albertaDate.toLocaleTimeString('en-US', timeOptions);
+
+                // Check Business Hours (9 AM - 5 PM, Mon-Fri)
+                const hours = albertaDate.getHours();
+                const day = albertaDate.getDay(); // 0 = Sun, 6 = Sat
+                const isWorkDay = day !== 0 && day !== 6;
+                const isWorkHours = hours >= 9 && hours < 17;
+
+                if (isWorkDay && isWorkHours) {
+                    availabilityBadge.textContent = "Available";
+                    availabilityBadge.className = "status-badge status-available";
+                    bookBtn.style.opacity = "1";
+                    bookBtn.style.pointerEvents = "auto";
+
+                    // Update Mailto Link
+                    const subject = encodeURIComponent(`Meeting Request: ${inputDate.toDateString()}`);
+                    const body = encodeURIComponent(`Hi Bryce,\n\nI'd like to request a meeting on:\n\nYour Time (Alberta): ${albertaDate.toLocaleString()}\nMy Time (${userTimezone}): ${inputDate.toLocaleString()}\n\nThanks!`);
+                    bookBtn.href = `mailto:brycesolis.9@gmail.com?subject=${subject}&body=${body}`;
+                } else {
+                    availabilityBadge.textContent = "Outside Business Hours";
+                    availabilityBadge.className = "status-badge status-unavailable";
+                    bookBtn.style.opacity = "0.5";
+                    bookBtn.style.pointerEvents = "none";
+                }
+            }
+
+            // Run initially and on change
+            updateConverter();
+            userTimeInput.addEventListener('input', updateConverter);
+        });
+    </script>
+</body>
+
+</html>
