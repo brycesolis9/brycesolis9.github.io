@@ -1,12 +1,11 @@
 /* Design System & Variables */
 :root {
-    /* Colors - Hybrid Theme */
-    --color-bg-dark: #0F2A22;
-    /* Very Deep Forest */
-    --color-bg-gradient-start: #1B4D3E;
-    /* Forest Green */
-    --color-bg-gradient-end: #0F2A22;
-    /* Deep Dark Green */
+    --color-bg-dark: #011222;
+    /* Deep Navy */
+    --color-bg-gradient-start: #042442;
+    /* Classic Navy Blue */
+    --color-bg-gradient-end: #011222;
+    /* Deep Navy */
 
     --color-glass: rgba(255, 255, 255, 0.05);
     --color-glass-border: rgba(255, 255, 255, 0.1);
@@ -30,8 +29,8 @@
     --spacing-xs: 0.5rem;
     --spacing-sm: 1rem;
     --spacing-md: 2rem;
-    --spacing-lg: 4rem;
-    --spacing-xl: 8rem;
+    --spacing-lg: 3rem;
+    --spacing-xl: 4.5rem;
 
     /* Transitions */
     --transition-standard: all 0.3s ease;
@@ -196,7 +195,7 @@ h2 {
 }
 
 #main-header.scrolled {
-    background-color: rgba(15, 42, 34, 0.9);
+    background-color: rgba(1, 18, 34, 0.9);
     /* Dark semi-transparent */
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
@@ -253,12 +252,11 @@ nav {
     transition: var(--transition-standard);
 }
 
-/* Hero Section */
 #hero {
     padding: 220px 0 var(--spacing-xl);
     /* Overlay + Image */
     background-image:
-        linear-gradient(to bottom, rgba(15, 42, 34, 0.6), var(--color-bg-dark)),
+        linear-gradient(to bottom, rgba(4, 36, 66, 0.6), var(--color-bg-dark)),
         url('hero-bg.png');
     background-size: cover;
     background-position: center;
